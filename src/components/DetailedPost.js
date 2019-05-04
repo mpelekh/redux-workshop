@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
+import { addComment } from '../modules'
 
 class DetailedPost extends PureComponent {
   static propTypes = {
@@ -8,7 +9,29 @@ class DetailedPost extends PureComponent {
     body: PropTypes.string,
     date: PropTypes.string,
     author: PropTypes.string,
-    comments: PropTypes.array
+    comments: PropTypes.array,
+    addComment: PropTypes.func
+  }
+
+  state = {
+    comment: ''
+  }
+
+  onChange = event => {
+    event.preventDefault()
+
+    this.setState({
+      comment: event.target.value
+    })
+  }
+
+  onSubmit = event => {
+    event.preventDefault()
+
+    this.props.addComment(this.state.comment)
+    this.setState({
+      comment: ''
+    })
   }
 
   render() {
@@ -49,9 +72,14 @@ class DetailedPost extends PureComponent {
         <div className="card my-4">
           <h5 className="card-header">Leave a Comment:</h5>
           <div className="card-body">
-            <form>
+            <form onSubmit={this.onSubmit}>
               <div className="form-group">
-                <textarea className="form-control" rows="3" />
+                <textarea
+                  className="form-control"
+                  rows="3"
+                  value={this.state.comment}
+                  onChange={this.onChange}
+                />
               </div>
               <button type="submit" className="btn btn-primary">
                 Submit
@@ -83,4 +111,7 @@ const mapStateToProps = ({ posts, comments }, { id }) => ({
   ...posts.find(({ id: postId }) => postId === Number(id))
 })
 
-export default connect(mapStateToProps)(DetailedPost)
+export default connect(
+  mapStateToProps,
+  { addComment }
+)(DetailedPost)
