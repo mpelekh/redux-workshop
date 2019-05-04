@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
 import BlogPost from './BlogPost'
 
 class BlogEntries extends Component {
@@ -48,4 +49,6 @@ class BlogEntries extends Component {
   }
 }
 
-export default BlogEntries
+const mapStateToProps = ({ posts }) => ({ posts })
+
+export default connect(mapStateToProps)(BlogEntries)

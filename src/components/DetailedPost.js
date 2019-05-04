@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
 
 class DetailedPost extends PureComponent {
   static propTypes = {
@@ -77,4 +78,9 @@ class DetailedPost extends PureComponent {
   }
 }
 
-export default DetailedPost
+const mapStateToProps = ({ posts, comments }, { id }) => ({
+  comments,
+  ...posts.find(({ id: postId }) => postId === Number(id))
+})
+
+export default connect(mapStateToProps)(DetailedPost)

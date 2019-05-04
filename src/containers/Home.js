@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import BlogEntries from '../components/BlogEntries'
 import DetailedPost from '../components/DetailedPost'
-import initialData from '../samples/initial-data'
 
 class Home extends Component {
   render() {
@@ -9,14 +8,7 @@ class Home extends Component {
       match: { params }
     } = this.props
 
-    return params.id ? (
-      <DetailedPost
-        comments={initialData.comments}
-        {...initialData.posts.find(({ id }) => id === Number(params.id))}
-      />
-    ) : (
-      <BlogEntries posts={initialData.posts} />
-    )
+    return params.id ? <DetailedPost id={params.id} /> : <BlogEntries />
   }
 }
 
