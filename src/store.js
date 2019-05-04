@@ -1,7 +1,6 @@
 import { createStore } from 'redux'
 import rootReducer from './modules'
-
-const initialState = {}
+import initialState from './samples/initial-data'
 
 const store = createStore(
   rootReducer,
