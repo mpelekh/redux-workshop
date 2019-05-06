@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { addComment } from '../modules/comments'
+import { getPosts } from '../modules/posts'
 
 class DetailedPost extends PureComponent {
   static propTypes = {
@@ -10,7 +11,9 @@ class DetailedPost extends PureComponent {
     date: PropTypes.string,
     author: PropTypes.string,
     comments: PropTypes.array,
-    addComment: PropTypes.func
+    isPostsLoading: PropTypes.bool,
+    addComment: PropTypes.func,
+    getPosts: PropTypes.func
   }
 
   state = {
@@ -34,8 +37,16 @@ class DetailedPost extends PureComponent {
     })
   }
 
+  componentDidMount() {
+    this.props.getPosts()
+  }
+
   render() {
-    const { title, body, date, author, comments } = this.props
+    const { title, body, date, author, comments, isPostsLoading } = this.props
+
+    if (isPostsLoading) {
+      return <div>Loading...</div>
+    }
 
     return (
       <div className="col-lg-8">
@@ -108,10 +119,11 @@ class DetailedPost extends PureComponent {
 
 const mapStateToProps = ({ posts, comments }, { id }) => ({
   comments,
-  ...posts.find(({ id: postId }) => postId === Number(id))
+  isPostsLoading: posts.isLoading,
+  ...posts.items.find(({ id: postId }) => postId === Number(id))
 })
 
 export default connect(
   mapStateToProps,
-  { addComment }
+  { addComment, getPosts }
 )(DetailedPost)
