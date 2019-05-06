@@ -1,4 +1,7 @@
-const POSTS_ACTIONS = {
+import { call, put } from 'redux-saga/effects'
+
+export const POSTS_ACTIONS = {
+  GET_POSTS: 'GET_POSTS',
   GET_POSTS_LOADING: 'GET_POSTS_LOADING',
   GET_POSTS_SUCCESS: 'GET_POSTS_SUCCESS',
   GET_POSTS_ERROR: 'GET_POSTS_ERROR'
@@ -37,15 +40,19 @@ export default function posts(state = INITIAL_STATE, action) {
   }
 }
 
-export const getPosts = () => {
-  dispatch({ type: POSTS_ACTIONS.GET_POSTS_LOADING })
+export const getPosts = () => ({ type: POSTS_ACTIONS.GET_POSTS })
 
-  fetch('https://jsonplaceholder.typicode.com/posts?_limit=10')
-    .then(response => response.json())
-    .then(posts =>
-      dispatch({ type: POSTS_ACTIONS.GET_POSTS_SUCCESS, payload: posts })
+export function* fetchPosts() {
+  yield put({ type: POSTS_ACTIONS.GET_POSTS_LOADING })
+
+  try {
+    const response = yield call(
+      fetch,
+      'https://jsonplaceholder.typicode.com/posts?_limit=10'
     )
-    .catch(error =>
-      dispatch({ type: POSTS_ACTIONS.GET_POSTS_ERROR, payload: error })
-    )
+    const data = yield response.json()
+    yield put({ type: POSTS_ACTIONS.GET_POSTS_SUCCESS, payload: data })
+  } catch (error) {
+    yield put({ type: POSTS_ACTIONS.GET_POSTS_ERROR, payload: error })
+  }
 }
