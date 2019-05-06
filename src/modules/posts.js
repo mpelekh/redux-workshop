@@ -37,7 +37,7 @@ export default function posts(state = INITIAL_STATE, action) {
   }
 }
 
-export const getPosts = () => {
+export const getPosts = () => dispatch => {
   dispatch({ type: POSTS_ACTIONS.GET_POSTS_LOADING })
 
   fetch('https://jsonplaceholder.typicode.com/posts?_limit=10')
