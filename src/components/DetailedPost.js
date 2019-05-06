@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { addComment } from '../modules'
+import { addComment } from '../modules/comments'
 
 class DetailedPost extends PureComponent {
   static propTypes = {
