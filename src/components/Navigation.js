@@ -1,5 +1,14 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
+import { UserContext } from '../index'
+
+function SignedInUser() {
+  return (
+    <UserContext.Consumer>
+      {user => <span>{user.email}</span>}
+    </UserContext.Consumer>
+  )
+}
 
 class Navigation extends Component {
   render() {
@@ -7,7 +16,7 @@ class Navigation extends Component {
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
         <div className="container">
           <Link className="navbar-brand" to="/">
-            Simple Blog
+            Simple Blog (<SignedInUser />)
           </Link>
           <div className="navbar-collapse">
             <ul className="navbar-nav ml-auto">

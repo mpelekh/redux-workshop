@@ -7,9 +7,16 @@ import * as serviceWorker from './serviceWorker'
 import './index.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
 
+const signedInUser = { email: 'mpelekh@lohika.com' }
+export const UserContext = React.createContext({
+  email: 'guest@lohika.com'
+})
+
 render(
   <Provider store={store}>
-    <App />
+    <UserContext.Provider value={signedInUser}>
+      <App />
+    </UserContext.Provider>
   </Provider>,
   document.getElementById('root')
 )
